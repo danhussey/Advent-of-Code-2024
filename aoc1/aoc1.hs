@@ -14,11 +14,18 @@ processFile filename = do
     pure (sort list1, sort list2)
 
 differenceScore :: ([Int], [Int]) -> Int
-differenceScore (list1, list2) = 
-    sum $ zipWith (\a b -> abs(a - b)) list1 list2
+differenceScore (list1, list2) =
+    sum $ zipWith (\a b -> abs (a - b)) list1 list2
+
+similarityScore :: ([Int], [Int]) -> Int
+similarityScore (list1, list2) =
+    sum [a * countIn a list2 | a <- list1]
+
+countIn :: Int -> [Int] -> Int
+countIn x xs = length (filter (== x) xs)
 
 main :: IO ()
 main = do
     result <- processFile "input.txt"
     print $ differenceScore result
-    
+    print $ similarityScore result
