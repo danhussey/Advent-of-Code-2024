@@ -18,4 +18,4 @@ result1 = sum([isDirectional(seq) and isGradual(seq) for seq in lines])
 
 result2 = sum([safetyDampener(seq) for seq in lines])
 
-print(result2)
+print(result1, result2)
