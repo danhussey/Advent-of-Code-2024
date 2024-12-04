@@ -1,4 +1,4 @@
-memory = "".join([line.strip("\n") for line in open("input.txt", "r")])
+memory = "".join([line.strip() for line in open("input.txt", "r")])
 pos, sumPart1, sumPart2 = 0,0,0
 while (pos := memory.find("mul(", pos)) != -1:
     mul_enabled = memory.rfind("do()", 0, pos) >= memory.rfind("don't()", 0, pos)

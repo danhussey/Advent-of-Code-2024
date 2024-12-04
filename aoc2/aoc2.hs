@@ -9,7 +9,7 @@ isDirectional xs = all (\(a,b) -> a>b || a<b) $ zip xs (tail xs)
 main :: IO ()
 main = do
     contents <- readFile "input.txt"
-    let sets :: [[Int]] = map (map read. words) $ lines contents
+    let sets :: [[Int]] = map (map read . words) $ lines contents
     let result :: Int = length $ filter (\x -> isDirectional x && isGradual x) sets
     print result
 
