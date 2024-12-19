@@ -21,12 +21,34 @@ def find_anode(pos1, pos2):
     pos_offset = pos2-pos1
     return pos1-pos_offset
 
+#Part 2 find equally spaced anodes in both directions including original points
+anodes = set()
+def find_anodes(pos1, pos2):
+    # Find anode recursively until out of bounds in both directions
+    # Dir 1
+    anodes.add(pos1)
+    anodes.add(pos2)
+
+    if is_in_bounds(dir_1_anode := find_anode(pos1, pos2)):
+        anodes.add(dir_1_anode)
+        find_anode(dir_1_anode, pos1)
+    
+    # Dir 2
+    if is_in_bounds(dir_2_anode := find_anode(pos2, pos1)):
+        anodes.add(dir_2_anode)
+        find_anode(dir_2_anode, pos2)
+    
+
+
 from itertools import permutations
 anode_positions = set()
 for char in all_chars:
     char_positions = find_all_char_positions(char)
     for pair in permutations(char_positions, 2):
+        find_anodes(*pair)
+
         if is_in_bounds(antinode := find_anode(*pair)):
             anode_positions.add(antinode)
 
 print(len(anode_positions))
+print(len(anodes))
