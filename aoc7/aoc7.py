@@ -4,23 +4,27 @@ with open("aoc7/input.txt", "r") as file:
 
 # Func that gets all possible equation results 
 from itertools import product
-def is_possibly_true_equation (test_value: int, operands: list[int]):
-    num_pairs = len(operands)-1
-    operators = ["*", "+"]
-    possible_operations_lists = list(product(operators, repeat=num_pairs))
-    # print(possible_operations_lists)
-    results = []
-    for operations_list in possible_operations_lists:
-        result = operands[0]
-        for pos, next_operand in enumerate(operands[1:]):
-            if operations_list[pos]=="*":
-                result = result*next_operand
-            elif operations_list[pos]=="+":
-                result+=next_operand
-            else:
-                print("Something's wrong.")
+from functools import reduce
 
-        if result == test_value:
+def apply_operator(x, y, operator):
+    if operator=="+":
+        return x+y
+    elif operator=="*":
+        return x*y
+
+
+def is_possibly_true_equation (test_value: int, operands: list[int]):
+    possible_operations_lists = list(product(["*", "+"], repeat=len(operands)-1))
+
+    
+    for operations_list in possible_operations_lists:
+        vals_ops = zip(operands[1:], operations_list)
+
+        res = reduce(lambda acc, val_op: (acc + val_op[0] if val_op[1]=="+" else acc*val_op[0]),
+                     vals_ops,
+                     operands[0])
+
+        if res == test_value:
             print("Found " + str(operations_list) + " for " + str(operands) + " == " + str(test_value))
             return True
     return False
@@ -34,3 +38,4 @@ for line in lines:
     operands = list(map(int, line[1:]))
     if is_possibly_true_equation(test_val, operands):
         sum += test_val
+print(sum)
